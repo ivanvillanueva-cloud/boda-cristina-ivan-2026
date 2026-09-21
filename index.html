@@ -102,7 +102,7 @@ button:hover{
 
 <section class="hero">
 
-<h1>Cristina & Iván</h1>
+<h1>Cristina e Iván</h1>
 
 <div class="fecha">
 24 de Octubre de 2026
@@ -285,28 +285,37 @@ const fechaBoda = new Date("2026-10-24T15:00:00");
 function actualizarContador(){
 
     const ahora = new Date();
-
     const diferencia = fechaBoda - ahora;
 
-    const dias = Math.floor(
-        diferencia / (1000 * 60 * 60 * 24)
-    );
+    const dias = Math.floor(diferencia/(1000*60*60*24));
 
     const horas = Math.floor(
-        (diferencia % (1000 * 60 * 60 * 24))
-        /
-        (1000 * 60 * 60)
+        (diferencia%(1000*60*60*24))
+        /(1000*60*60)
     );
 
-    const contador =
-        document.getElementById("contador");
+    const minutos = Math.floor(
+        (diferencia%(1000*60*60))
+        /(1000*60)
+    );
 
-    if(contador){
+    const segundos = Math.floor(
+        (diferencia%(1000*60))
+        /1000
+    );
 
-        contador.innerHTML =
-        `Faltan ${dias} días y ${horas} horas`;
+    document.getElementById("contador").innerHTML =
+    `
+    <div style="font-size:3rem;color:#d4af37;">
+        ${dias}
+    </div>
+    <div>Días</div>
 
-    }
+    <div style="margin-top:15px;">
+        ${horas}h ${minutos}m ${segundos}s
+    </div>
+    `;
+}
 
 }
 
