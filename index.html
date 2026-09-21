@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cristina & Iván</title>
+<title>Cristina e Iván</title>
 
 <style>
 
 body{
     margin:0;
     padding:0;
-    background:#0d0d0d;
+    background:#000;
     color:white;
     font-family:Georgia, serif;
     text-align:center;
@@ -38,7 +38,7 @@ h1{
 }
 
 .mensaje{
-    max-width:700px;
+    max-width:600px;
     margin-top:30px;
     line-height:1.8;
     font-size:1.2rem;
@@ -51,7 +51,7 @@ h1{
     color:#d4af37;
     text-decoration:none;
     border-radius:30px;
-    display:inline-block;
+    transition:.3s;
 }
 
 .boton:hover{
@@ -61,15 +61,12 @@ h1{
 
 #contador{
     margin-top:30px;
-    font-size:1.8rem;
+    font-size:2rem;
     font-weight:bold;
 }
 
-section{
-    padding:60px 20px;
-}
-
-input, select{
+input,
+select{
     width:100%;
     padding:15px;
     margin:10px 0;
@@ -88,14 +85,17 @@ button{
     font-weight:bold;
 }
 
+button:hover{
+    opacity:.9;
+}
+
 #resultado{
     margin-top:20px;
-    font-weight:bold;
     color:#d4af37;
+    font-weight:bold;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -112,9 +112,7 @@ button{
 Nos encantaría compartir con ustedes uno de los días más importantes de nuestras vidas.
 </div>
 
-<div id="contador">
-Cargando...
-</div>
+<div id="contador"></div>
 
 <a href="#evento" class="boton">
 Descubrir Nuestra Historia
@@ -122,7 +120,7 @@ Descubrir Nuestra Historia
 
 </section>
 
-<section id="evento">
+<section id="evento" style="padding:60px 20px;">
 
 <h2>Ceremonia Religiosa</h2>
 
@@ -149,7 +147,7 @@ Chihuahua 13, Col. Progreso,
 
 <h2>Confirmar Asistencia</h2>
 
-<div style="max-width:500px;margin:auto;">
+<div style="max-width:500px; margin:auto;">
 
 <input
 id="nombre"
@@ -164,12 +162,14 @@ placeholder="Teléfono"
 >
 
 <select id="asistentes">
+
 <option value="1">1 Persona</option>
 <option value="2">2 Personas</option>
 <option value="3">3 Personas</option>
 <option value="4">4 Personas</option>
 <option value="5">5 Personas</option>
 <option value="6">6 Personas</option>
+
 </select>
 
 <button onclick="confirmarAsistencia()">
@@ -184,41 +184,91 @@ Confirmar asistencia
 
 <script>
 
+/* CONTADOR */
+
 const fechaBoda = new Date("2026-10-24T15:00:00");
 
 function actualizarContador(){
 
-const contador = document.getElementById("contador");
+    const ahora = new Date();
 
-if(!contador) return;
+    const diferencia = fechaBoda - ahora;
 
-const ahora = new Date();
+    const dias = Math.floor(
+        diferencia / (1000 * 60 * 60 * 24)
+    );
 
-const diferencia = fechaBoda - ahora;
+    const horas = Math.floor(
+        (diferencia % (1000 * 60 * 60 * 24))
+        /
+        (1000 * 60 * 60)
+    );
 
-const dias = Math.floor(
-diferencia / (1000*60*60*24)
-);
+    const contador =
+        document.getElementById("contador");
 
-const horas = Math.floor(
-(diferencia % (1000*60*60*24))
-/
-(1000*60*60)
-);
+    if(contador){
 
-contador.innerHTML =
-`Faltan ${dias} días y ${horas} horas`;
+        contador.innerHTML =
+        `Faltan ${dias} días y ${horas} horas`;
+
+    }
 
 }
 
 actualizarContador();
-
 setInterval(actualizarContador,1000);
+
+
+/* CONFIRMAR ASISTENCIA */
 
 async function confirmarAsistencia(){
 
-document.getElementById("resultado").innerHTML =
-"Conexión lista. Próximo paso: conectar Google Sheets.";
+    const nombre =
+    document.getElementById("nombre").value;
+
+    const telefono =
+    document.getElementById("telefono").value;
+
+    const asistentes =
+    document.getElementById("asistentes").value;
+
+    if(!nombre || !telefono){
+
+        alert("Completa todos los campos");
+        return;
+
+    }
+
+    const datos = {
+        nombre,
+        telefono,
+        asistentes
+    };
+
+    try{
+
+        const respuesta = await fetch(
+        "https://script.google.com/macros/s/AKfycbyrncpjT2mJAu1JnUWVftcoSv689PX7CStFDli3RFVojBBHFQV6qwZJvQE1JZg-amxS/exec",
+        {
+            method:"POST",
+            body:JSON.stringify(datos)
+        });
+
+        const resultado =
+        await respuesta.json();
+
+        document.getElementById("resultado")
+        .innerHTML = resultado.mensaje;
+
+    }
+    catch(error){
+
+        document.getElementById("resultado")
+        .innerHTML =
+        "Error al enviar confirmación";
+
+    }
 
 }
 
@@ -226,4 +276,3 @@ document.getElementById("resultado").innerHTML =
 
 </body>
 </html>
-</script>
