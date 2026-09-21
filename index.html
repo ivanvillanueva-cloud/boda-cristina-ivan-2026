@@ -1,1 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Cristina & Iván</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#0d0d0d;
+    color:white;
+    font-family:Georgia, serif;
+    text-align:center;
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+h1{
+    font-size:4rem;
+    color:#d4af37;
+    margin:0;
+}
+
+.fecha{
+    font-size:1.5rem;
+    margin-top:20px;
+}
+
+.mensaje{
+    max-width:600px;
+    margin-top:30px;
+    line-height:1.8;
+    font-size:1.2rem;
+}
+
+.boton{
+    margin-top:40px;
+    padding:15px 30px;
+    border:2px solid #d4af37;
+    color:#d4af37;
+    text-decoration:none;
+    border-radius:30px;
+}
+
+.boton:hover{
+    background:#d4af37;
+    color:black;
+}
+
+#contador{
+    margin-top:30px;
+    font-size:1.5rem;
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+
+<h1>Cristina & Iván</h1>
+
+<div class="fecha">
+24 de Octubre de 2026
+</div>
+
+<div class="mensaje">
+Nos encantaría compartir con ustedes uno de los días más importantes de nuestras vidas.
+</div>
+
+<div id="contador"></div>
+
+<a href="#evento" class="boton">
+Descubrir Nuestra Historia
+</a>
+
+</section>
+
+<section id="evento" style="padding:60px 20px;">
+
+<h2>Ceremonia Religiosa</h2>
+
+<p>
+Parroquia de Santa María de la Natividad de Tetelpan
+<br>
+3:00 PM
+</p>
+
+<h2>Recepción</h2>
+
+<p>
+Chihuahua 13, Col. Progreso,
+Álvaro Obregón, CDMX
+<br>
+4:00 PM
+</p>
+
+<h2>Código de Vestimenta</h2>
+
+<p>Formal</p>
+
+</section>
+
+<script>
+
+const fechaBoda = new Date("2026-10-24T15:00:00");
+
+function actualizarContador(){
+
+const ahora = new Date();
+
+const diferencia = fechaBoda - ahora;
+
+const dias = Math.floor(diferencia/(1000*60*60*24));
+
+const horas = Math.floor(
+(diferencia%(1000*60*60*24))
+/
+(1000*60*60)
+);
+
+document.getElementById("contador").innerHTML =
+`Faltan ${dias} días y ${horas} horas`;
+
+}
+
+setInterval(actualizarContador,1000);
+
+actualizarContador();
+
+</script>
+
+</body>
+</html>
