@@ -1,81 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cristina & Iván</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    background:#0d0d0d;
+    color:white;
+    font-family:Georgia, serif;
+    text-align:center;
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+h1{
+    font-size:4rem;
+    color:#d4af37;
+    margin:0;
+}
+
+.fecha{
+    font-size:1.5rem;
+    margin-top:20px;
+}
+
+.mensaje{
+    max-width:700px;
+    margin-top:30px;
+    line-height:1.8;
+    font-size:1.2rem;
+}
+
+.boton{
+    margin-top:40px;
+    padding:15px 30px;
+    border:2px solid #d4af37;
+    color:#d4af37;
+    text-decoration:none;
+    border-radius:30px;
+    display:inline-block;
+}
+
+.boton:hover{
+    background:#d4af37;
+    color:black;
+}
+
+#contador{
+    margin-top:30px;
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+section{
+    padding:60px 20px;
+}
+
+input, select{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    box-sizing:border-box;
+}
+
+button{
+    padding:15px 30px;
+    background:#d4af37;
+    color:black;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#resultado{
+    margin-top:20px;
+    font-weight:bold;
+    color:#d4af37;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<section class="hero">
+
+<h1>Cristina & Iván</h1>
+
+<div class="fecha">
+24 de Octubre de 2026
+</div>
+
+<div class="mensaje">
+Nos encantaría compartir con ustedes uno de los días más importantes de nuestras vidas.
+</div>
+
+<div id="contador">
+Cargando...
+</div>
+
+<a href="#evento" class="boton">
+Descubrir Nuestra Historia
+</a>
+
+</section>
+
+<section id="evento">
+
+<h2>Ceremonia Religiosa</h2>
+
+<p>
+Parroquia de Santa María de la Natividad de Tetelpan
+<br>
+3:00 PM
+</p>
+
+<h2>Recepción</h2>
+
+<p>
+Chihuahua 13, Col. Progreso,
+Álvaro Obregón, CDMX
+<br>
+4:00 PM
+</p>
+
+<h2>Código de Vestimenta</h2>
+
+<p>Formal</p>
+
+<hr style="margin:60px 0; border-color:#333;">
+
+<h2>Confirmar Asistencia</h2>
+
+<div style="max-width:500px;margin:auto;">
+
+<input
+id="nombre"
+type="text"
+placeholder="Nombre completo"
+>
+
+<input
+id="telefono"
+type="tel"
+placeholder="Teléfono"
+>
+
+<select id="asistentes">
+<option value="1">1 Persona</option>
+<option value="2">2 Personas</option>
+<option value="3">3 Personas</option>
+<option value="4">4 Personas</option>
+<option value="5">5 Personas</option>
+<option value="6">6 Personas</option>
+</select>
+
+<button onclick="confirmarAsistencia()">
+Confirmar asistencia
+</button>
+
+<p id="resultado"></p>
+
+</div>
+
+</section>
+
 <script>
 
 const fechaBoda = new Date("2026-10-24T15:00:00");
 
 function actualizarContador(){
 
+const contador = document.getElementById("contador");
+
+if(!contador) return;
+
 const ahora = new Date();
 
 const diferencia = fechaBoda - ahora;
 
-const dias = Math.floor(diferencia/(1000*60*60*24));
+const dias = Math.floor(
+diferencia / (1000*60*60*24)
+);
 
 const horas = Math.floor(
-(diferencia%(1000*60*60*24))
+(diferencia % (1000*60*60*24))
 /
 (1000*60*60)
 );
 
-document.getElementById("contador").innerHTML =
+contador.innerHTML =
 `Faltan ${dias} días y ${horas} horas`;
 
 }
 
-setInterval(actualizarContador,1000);
-
 actualizarContador();
 
-async function confirmarAsistencia() {
+setInterval(actualizarContador,1000);
 
-const nombre =
-document.getElementById("nombre").value;
-
-const telefono =
-document.getElementById("telefono").value;
-
-const asistentes =
-document.getElementById("asistentes").value;
-
-if(!nombre || !telefono){
+async function confirmarAsistencia(){
 
 document.getElementById("resultado").innerHTML =
-"Por favor completa todos los campos.";
-
-return;
+"Conexión lista. Próximo paso: conectar Google Sheets.";
 
 }
 
-try{
+</script>
 
-const respuesta = await fetch(
-"https://script.google.com/macros/s/AKfycbyrncpjT2mJAu1JnUWVftcoSv689PX7CStFDli3RFVojBBHFQV6qwZJvQE1JZg-amxS/exec",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-nombre:nombre,
-telefono:telefono,
-asistentes:asistentes
-})
-}
-);
-
-const data = await respuesta.json();
-
-document.getElementById("resultado").innerHTML =
-data.mensaje;
-
-}
-catch(error){
-
-document.getElementById("resultado").innerHTML =
-"Error al enviar la confirmación.";
-
-console.error(error);
-
-}
+</body>
+</html>
 
 }
 
