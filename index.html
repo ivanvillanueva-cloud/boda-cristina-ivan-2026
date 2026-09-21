@@ -334,17 +334,46 @@ function actualizarContador(){
         /1000
     );
 
-    document.getElementById("contador").innerHTML =
-    `
+ document.getElementById("contador").innerHTML =
+`
+<div style="
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+margin-top:20px;
+">
+
+<div>
     <div style="font-size:3rem;color:#d4af37;">
         ${dias}
     </div>
     <div>Días</div>
+</div>
 
-    <div style="margin-top:15px;">
-        ${horas}h ${minutos}m ${segundos}s
+<div>
+    <div style="font-size:3rem;color:#d4af37;">
+        ${horas}
     </div>
-    `;
+    <div>Horas</div>
+</div>
+
+<div>
+    <div style="font-size:3rem;color:#d4af37;">
+        ${minutos}
+    </div>
+    <div>Min</div>
+</div>
+
+<div>
+    <div style="font-size:3rem;color:#d4af37;">
+        ${segundos}
+    </div>
+    <div>Seg</div>
+</div>
+
+</div>
+`;
 }
 
 actualizarContador();
